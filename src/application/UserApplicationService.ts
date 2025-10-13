@@ -1,5 +1,5 @@
-import { UserPort } from "../domain/UserPort";
-import { User } from "../domain/User";
+import { UserPort } from "../domain/UserPort.ts";
+import { User } from "../domain/User.ts";
 import { promises } from "dns";
 
 
@@ -47,8 +47,8 @@ export class UserApplicationService{
         return await this.port.deleteUser(id);
     }
 }
-import type { UserPort } from "../domian/UserPort.ts";
-import type { User } from "../domian/User.ts";
+import type { UserPort } from "../domain/UserPort.ts";
+import type { User } from "../domain/User.ts";
 
 export class UserAplicationService {
     private port: UserPort;
@@ -71,7 +71,7 @@ export class UserAplicationService {
         return await this.port.getUserByEmail(email);
     }
     async getAllUsers(): Promise<User[]> {
-        return await this.port.getAllUsers();
+        return await this.port.getAllUser();
     }
     async updateUser(id: number, p0: { name: any; email: any; password: any; status: any; }, {  user }: { id: number; user: Partial<User>; }): Promise<boolean> {
         // Validar si el usuario existe

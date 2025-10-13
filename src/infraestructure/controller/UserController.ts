@@ -1,6 +1,6 @@
 import type { UserAplicationService } from "../../application/UserApplicationService.ts";
 import type { Request, Response } from "express";
-import type { User } from "../../domian/User.ts";
+import type { User } from "../../domain/User.ts";
 import type { error } from "console";
 import { getDefaultResultOrder } from "dns";
 

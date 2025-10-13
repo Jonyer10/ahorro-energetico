@@ -9,40 +9,33 @@ export class ApartamentApplicationService {
     }
 
     async createApartament(apartament: Omit<Apartament, "id">): Promise<number> {
-        const existingApartament = await this.port.getApartamentByName(apartament.name);
+        // se hacen validaciones de negocio
+        const existingApartament = await this.port.getApartamentByNumber(apartament.apartament_number);
         if (!existingApartament) {
-            return await this.port.createApartament(apartament);
+            return this.port.createApartament(apartament);
         }
-        throw new Error("Apartament with this name already exists");
+        throw new Error("apartamento con numero existente");
     }
-
     async getApartamentById(id: number): Promise<Apartament | null> {
         return await this.port.getApartamentById(id);
     }
-
     async getAllApartaments(): Promise<Apartament[]> {
         return await this.port.getAllApartaments();
     }
-
     async updateApartament(id: number, apartament: Partial<Apartament>): Promise<boolean> {
         const existingApartament = await this.port.getApartamentById(id);
         if (!existingApartament) {
-            throw new Error("Apartament not found");
+            throw new Error("apartamento no encontrado");
         }
-        if (apartament.name) {
-            const nameTaken = await this.port.getApartamentByName(apartament.name);
-            if (nameTaken && nameTaken.id !== id) {
-                throw new Error("Apartament name already taken");
-            }
-        }
-        return await this.port.updateApartament(id, apartament);
+        return this.port.updateApartament(id, apartament);
     }
-
     async deleteApartament(id: number): Promise<boolean> {
         const existingApartament = await this.port.getApartamentById(id);
         if (!existingApartament) {
-            throw new Error("Apartament not found");
+            throw new Error("apartamento no encontrado");
         }
         return await this.port.deleteApartament(id);
     }
+
+
 }
