@@ -13,7 +13,7 @@ export class UserController {
 
     async createUser(req: Request, res: Response) {
         // Lógica para manejar la creación de un usuario
-        const { name, email, password, status } = req.body;
+        const { name, email, password } = req.body;
         try {
             //validaciones con regexserId
             const nameRegex = /^[a-zA-Z\zAñ]+$/;

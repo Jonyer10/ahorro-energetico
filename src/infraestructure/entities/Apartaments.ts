@@ -1,8 +1,8 @@
 
-export interface Apartament{
-    
+export interface ApartamentEntity {
+
     id: number;
-    apartament_number: number | string;
+    apartament_number: string;
     torre: string;
     piso: number;
     user_id: number;

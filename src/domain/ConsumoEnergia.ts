@@ -1,12 +1,14 @@
-import { number } from "joi";
+import { date } from 'joi';
 
 export interface ConsumoEnergia{
-    id: Number;
+
+    id: number;
     apartament_id: number;
     consumo_kwh: number;
     cost: number;
     fecha_lectura: Date;
     mes_facturacion: string; // puede ser en formate date, para una mejor precision
-    lectura_medidor: number;
+    consumo_mensual: number;
     notas?: string;
+    length?: number;
 }

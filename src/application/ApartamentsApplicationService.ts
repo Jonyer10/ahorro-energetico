@@ -23,9 +23,16 @@ export class ApartamentApplicationService {
         return await this.port.getAllApartaments();
     }
     async updateApartament(id: number, apartament: Partial<Apartament>): Promise<boolean> {
+        // Validar si el apartamento existe
         const existingApartament = await this.port.getApartamentById(id);
         if (!existingApartament) {
             throw new Error("apartamento no encontrado");
+        }
+        if (apartament.apartament_number) {
+            const apartamenttaken = await this.port.getApartamentByNumber(apartament.apartament_number);
+            if (apartamenttaken && apartamenttaken.id !== id) {
+                throw new Error("apartamento con numero existente");
+            }
         }
         return this.port.updateApartament(id, apartament);
     }
