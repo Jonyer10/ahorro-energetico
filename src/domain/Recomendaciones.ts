@@ -1,5 +1,5 @@
 
-export interface recomendaciones{
+export interface Recomendaciones{
      id: number;
      apartament_id: number;
      title: string;
