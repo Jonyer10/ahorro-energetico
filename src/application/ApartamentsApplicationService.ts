@@ -10,7 +10,7 @@ export class ApartamentApplicationService {
 
     async createApartament(apartament: Omit<Apartament, "id">): Promise<number> {
         // se hacen validaciones de negocio
-        const existingApartament = await this.port.getApartamentByNumber(apartament.apartament_number);
+        const existingApartament = await this.port.getApartamentByNumber(String(apartament.apartament_number));
         if (!existingApartament) {
             return this.port.createApartament(apartament);
         }
@@ -29,7 +29,7 @@ export class ApartamentApplicationService {
             throw new Error("apartamento no encontrado");
         }
         if (apartament.apartament_number) {
-            const apartamenttaken = await this.port.getApartamentByNumber(apartament.apartament_number);
+            const apartamenttaken = await this.port.getApartamentByNumber(String(apartament.apartament_number));
             if (apartamenttaken && apartamenttaken.id !== id) {
                 throw new Error("apartamento con numero existente");
             }

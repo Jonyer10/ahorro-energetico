@@ -3,6 +3,9 @@ import { ConsumoEnergiaPort } from "../domain/ConsumoEnergiaPort";
 
 
 export class ConsumoEnergiaApplicationService {
+    getConsumoEnergiaByApartamentId(apartament_id: string) {
+        throw new Error('Method not implemented.');
+    }
     private port: ConsumoEnergiaPort;
 
     constructor(port: ConsumoEnergiaPort) {
@@ -33,7 +36,7 @@ export class ConsumoEnergiaApplicationService {
             throw new Error("Consumo de energia no encontrado");
         }
         if (consumo.mes_facturacion && consumo.apartament_id) {
-            const consumotaken = await this.port.getByApartamentIdAndMonth(consumo.apartament_id, consumo.mes_facturacion);
+            const consumotaken = await this.port.getByApartamentIdAndMonth(consumo.apartament_id, consumo.mes_facturacion) as ConsumoEnergia | null;
             if (consumotaken && consumotaken.id !== id) {
                 throw new Error("Consumo de energia ya registrado para este apartamento y mes");
             }

@@ -1,13 +1,13 @@
-import type { UserAplicationService } from "../../application/UserApplicationService.ts";
+import type { UserApplicationService } from "../../application/UserApplicationService.ts";
 import type { Request, Response } from "express";
 import type { User } from "../../domain/User.ts";
-import type { error } from "console";
-import { getDefaultResultOrder } from "dns";
+
+
 
 export class UserController {
-    private app: UserAplicationService;
+    private app: UserApplicationService;
 
-    constructor(app: UserAplicationService) {
+    constructor(app: UserApplicationService) {
         this.app = app;
     }
 
@@ -27,7 +27,7 @@ export class UserController {
                 return res.status(400).json({
                     error: "La contraseña debe tener entre 8 y 25 caracteres, incluyendo letras mayúsculas, minúsculas, números y caracteres especiales."
                 });
-            const status = 1; // Estado activo por defecto
+            const status = "1"; // Estado activo por defecto
             const user: Omit<User, "id"> = { name, email, password, status };
 
             const userId = await this.app.createUser(user);

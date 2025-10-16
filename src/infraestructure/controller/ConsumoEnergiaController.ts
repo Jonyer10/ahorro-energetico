@@ -85,7 +85,7 @@ export class ConsumoEnergiaController {
 
     async getConsumoEnergiaById(req: Request, res: Response) {
         try {
-            const id = parseInt(req.params.id);
+            const id = parseInt(req.params.id ?? "");
             if (isNaN(id)) 
                 return res.status(400).json({ message: "el id debe ser un número" });
             const consumoEnergia = await this.app.getConsumoEnergiaById(id);
@@ -104,13 +104,15 @@ export class ConsumoEnergiaController {
     async getConsumoEnergiaByApartamentId(req: Request, res: Response) {
         try {
             const apartament_id = req.params.apartament_id;
-            if(!/^[a-zA-Z0-9\s.,'-]*$/.test(apartament_id.trim())) 
+            if (!apartament_id || !/^[a-zA-Z0-9\s.,'-]*$/.test(apartament_id.trim())) 
                 return res
                 .status(400)
                 .json({ message: "ID de apartamento contiene caracteres inválidos" });
                 // Validar que el apartamento exista
-            const consumoEnergia = await this.app.getConsumoEnergiaById(apartament_id);
-            if(consumoEnergia.length === 0) return res.status(404).json({ message: "No se encontraron consumos de energía para este apartamento" });
+            const consumoEnergia = await this.app.getConsumoEnergiaByApartamentId(apartament_id);
+            if (!Array.isArray(consumoEnergia) || consumoEnergia.length === 0) {
+                return res.status(404).json({ message: "No se encontraron consumos de energía para este apartamento" });
+            }
             return res.status(200).json(consumoEnergia);
         } catch (error) {
             if (error instanceof Error) {
@@ -139,7 +141,7 @@ export class ConsumoEnergiaController {
 
     async deleteConsumoEnergia(req: Request, res: Response): Promise<Response> {
         try {
-            const id = parseInt(req.params.id);
+            const id = parseInt(req.params.id ?? "");
             if (isNaN(id)) 
                 return res
             .status(400)
@@ -164,7 +166,7 @@ export class ConsumoEnergiaController {
 
     async updateConsumoEnergia(req: Request, res: Response): Promise<Response> {
         try {
-            const id = parseInt(req.params.id);
+            const id = parseInt(req.params.id ?? "");
             if (isNaN(id)) 
                 return res
             .status(400)

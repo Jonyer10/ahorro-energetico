@@ -4,6 +4,9 @@ import { RecomendacionesPort } from "../domain/RecomendacionesPort";
 
 
 export class RecomendacionesApplicationService {
+    getRecomendacionesByApartamentId(apartamentId: number) {
+        throw new Error('Method not implemented.');
+    }
     private port: RecomendacionesPort;
 
     constructor(port: RecomendacionesPort) {
@@ -38,8 +41,10 @@ export class RecomendacionesApplicationService {
             if (recomendacionesTaken && recomendacionesTaken.some(rec => rec.id !== id && rec.title === recomendaciones.title)) {
                 throw new Error("Recomendacion ya existe con este titulo");
             }
-        return this.port.updateRecomendaciones(id, recomendaciones);
-    }
+            return this.port.updateRecomendaciones(id, recomendaciones);
+        }
+        // Si no se cumplen las condiciones anteriores, retornar false
+        return false;
     }
 
     async deleteRecomendaciones(id: number): Promise<boolean> {

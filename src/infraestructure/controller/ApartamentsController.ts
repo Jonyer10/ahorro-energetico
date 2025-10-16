@@ -61,7 +61,10 @@ export class ApartamentsController {
     }
     async getApartamentById(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const id = parseInt(req.params.id ?? "");
+            if (isNaN(id)) {
+                return res.status(400).json({ message: "El ID debe ser un número válido" });
+            }
             const apartament = await this.app.getApartamentById(id);
             if (!apartament) {
                 return res.status(404).json({ message: "Apartamento no encontrado" });
