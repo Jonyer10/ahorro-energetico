@@ -124,6 +124,41 @@ export class ConsumoEnergiaController {
         }
     }
 
+    async getByApartamentIdAndMonth(req: Request, res: Response): Promise<Response> {
+        try {
+            const apartament_id = req.params.apartament_id;
+            const month = req.params.month;
+            if (!apartament_id) 
+                return res
+                .status(400)
+                .json({ message: "ID de apartamento es requerido" });
+
+            const apartamentIdNum = parseInt(apartament_id ?? "");
+            if (isNaN(apartamentIdNum)) 
+                return res
+                .status(400)
+                .json({ message: "ID de apartamento debe ser un número" });
+
+            if (!month || !/^\d{4}-\d{2}$/.test(month)) {
+                return res
+                .status(400)
+                .json({ message: "Mes debe tener el formato YYYY-MM" });
+            }
+            const consumoEnergia = await this.app.getByApartamentIdAndMonth(apartamentIdNum, month);
+            if (!consumoEnergia) {
+                return res.status(404).json({ message: "No se encontró consumo de energía para este apartamento en el mes especificado" });
+            }
+            return res.status(200).json(consumoEnergia);
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(500)
+                .json({ error: "error en el servidor",
+                    details: error.message });
+            }
+            return res.status(500).json({ error: "error en el servidor" });
+        }
+    }
+
     async getAllConsumoEnergias(req: Request, res: Response): Promise<Response> {
         try {
             const consumoEnergias = await this.app.getAllConsumoEnergia();

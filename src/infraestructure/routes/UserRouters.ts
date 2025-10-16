@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { UserAdapter } from "../adapter/UserAdapter.ts";
-import { UserAplicationService } from "../../application/UserApplicationService.ts";
+import { UserApplicationService } from "../../application/UserApplicationService.ts";
 import { UserController } from "../controller/UserController.ts";
 
 
@@ -9,7 +9,7 @@ const router = Router();
 
 // Crear instancias de los adaptadores, servicios y controladores
 const userAdapter = new UserAdapter();
-const userApplicationService = new UserAplicationService(userAdapter);
+const userApplicationService = new UserApplicationService(userAdapter);
 const userController = new UserController(userApplicationService);
 
 //definir las rutas y asociarlas con los métodos del controlador

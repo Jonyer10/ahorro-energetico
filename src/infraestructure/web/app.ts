@@ -2,7 +2,11 @@
 
 import express, { type Request, type Response } from "express";
 import userRouter from "../routes/UserRouters.ts"; 
-import energyRouter from "../routes/EnergyRouters.ts";
+import apartamentsRouter from "../routes/ApartamentsRouters.ts";
+import recomendacionesRouter from "../routes/RecomendacionesRouters.ts";
+import SolicitudServicio from "../routes/SolicitudServicioRouters.ts";
+import ConsumoEnergia   from "../routes/ConsumoEnergiaRouters";
+
 
  class App{
     private app: express.Application;
@@ -20,7 +24,11 @@ import energyRouter from "../routes/EnergyRouters.ts";
 
     private routes():void{
         this.app.use("/api", userRouter);
-        this.app.use("/api", energyRouter);
+        this.app.use("/api", apartamentsRouter);
+        this.app.use("/api", recomendacionesRouter);
+        this.app.use("/api", SolicitudServicio);
+        this.app.use("/api", ConsumoEnergia);
+        
      }
 
 

@@ -25,6 +25,11 @@ export class ConsumoEnergiaApplicationService {
         return await this.port.getById(id);
     }
 
+    async getByApartamentIdAndMonth(apartament_id: number, month: string): Promise<ConsumoEnergia | null> {
+        const result = await this.port.getByApartamentIdAndMonth(apartament_id, month);
+        return result as ConsumoEnergia | null;
+    }
+
     async getAllConsumoEnergia(): Promise<ConsumoEnergia[]> {
         return await this.port.getAll();
     }

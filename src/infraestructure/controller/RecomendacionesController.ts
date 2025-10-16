@@ -1,8 +1,7 @@
 import { RecomendacionesApplicationService } from '../../application/RecomendacionesApplicationService';
 import { Recomendaciones } from '../../domain/Recomendaciones';
-import { Apartament } from '../../domain/Apartament';
 import type { Request, Response } from 'express';
-import { error } from 'console';
+
 
 
 export class RecomendacionesController { 
@@ -111,7 +110,7 @@ export class RecomendacionesController {
                 return res.status(400).json({ error: "ID de apartamento inválido" });
             }
             // validar que el apartamentId es un número positivo
-            const recomendaciones: Recomendaciones[] | null = await this.app.getRecomendacionesByApartamentId(parseInt(apartamentId));
+            const recomendaciones: Recomendaciones[] | null = await (this.app as any).getRecomendacionesByApartamentId(parseInt(apartamentId));
             if (!recomendaciones || recomendaciones.length === 0) {
                 return res.status(404).json({ error: "No se encontraron recomendaciones para este apartamento" });
             }
@@ -127,6 +126,61 @@ export class RecomendacionesController {
                 return res.status(500).json({ error: "Error en el servidor" });
             }
     }
+        async getRecomendacionesByStatus(req: Request, res: Response) {
+        try {
+            const apartamentId = req.params.apartament_id;
+            const status = req.params.status;
+            if (!apartamentId || !/^\d+$/.test(apartamentId)) {
+                return res.status(400).json({ error: "ID de apartamento inválido" });
+            }
+            if (!status || !/^(activo|inactivo)$/i.test(status)) {
+                return res.status(400).json({ error: "Estado inválido. Debe ser 'activo' o 'inactivo'." });
+            }
+            const recomendaciones: Recomendaciones[] | null = await this.app.getRecomendacionesByStatus(parseInt(apartamentId), status);
+            if (!recomendaciones || recomendaciones.length === 0) {
+                return res.status(404).json({ error: "No se encontraron recomendaciones para este apartamento con el estado especificado" });
+            }
+            return res.status(200).json(recomendaciones);
+
+            } catch (error) {
+                if (error instanceof Error) {
+                    return res.status(500).json({
+                        error: "Error en el servidor",
+                        details: error.message
+                    });
+                }
+                return res.status(500).json({ error: "Error en el servidor" });
+            }
+        }
+
+        async getRecomendacionesByCategory(req: Request, res: Response) {
+        try {
+            const apartamentId = req.params.apartament_id;
+            const categoria = req.params.categoria;
+
+            if (!apartamentId || !/^\d+$/.test(apartamentId)) {
+                return res.status(400).json({ error: "ID de apartamento inválido" });
+            }
+            if (!categoria || !/^[a-zA-Z0-9\s,.!?'-]+$/.test(categoria)) {
+                return res.status(400).json({ error: "Categoría inválida" });
+            }
+
+            const recomendaciones: Recomendaciones[] | null = await this.app.getRecomendacionesByCategory(parseInt(apartamentId), categoria);
+            if (!recomendaciones || recomendaciones.length === 0) {
+                return res.status(404).json({ error: "No se encontraron recomendaciones para esta categoría" });
+            }
+            return res.status(200).json(recomendaciones);
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).json({
+                    error: "Error en el servidor",
+                    details: error.message
+                });
+            }
+            return res.status(500).json({ error: "Error en el servidor" });
+        }
+    }
+
         async getAllRecomendaciones(req: Request, res: Response) {
         try {
             const recomendaciones = await this.app.getAllRecomendaciones();

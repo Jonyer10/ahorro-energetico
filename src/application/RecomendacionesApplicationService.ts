@@ -30,6 +30,14 @@ export class RecomendacionesApplicationService {
         return await this.port.getAllRecomendaciones();
     }
 
+    async getRecomendacionesByStatus(apartament_id: number, status: string): Promise<Recomendaciones[]> {
+        return await this.port.getRecomendacionesByStatus(apartament_id, status);
+    }
+
+    async getRecomendacionesByCategory(apartament_id: number, categoria: string): Promise<Recomendaciones[]> {
+        return await this.port.getRecomendacionesByCategory(apartament_id, categoria);
+    }
+
     async updateRecomendaciones(id: number, recomendaciones: Partial<Recomendaciones>): Promise<boolean> {
        // Validar si la recomendacion existe
         const existingRecomendaciones = await this.port.getRecomendaciones(id);
@@ -38,7 +46,7 @@ export class RecomendacionesApplicationService {
         }
         if (recomendaciones.apartament_id && recomendaciones.title ){  
             const recomendacionesTaken = await this.port.getRecomendacionesByApartamentId(recomendaciones.apartament_id);
-            if (recomendacionesTaken && recomendacionesTaken.some(rec => rec.id !== id && rec.title === recomendaciones.title)) {
+            if (Array.isArray(recomendacionesTaken) && recomendacionesTaken.some(rec => rec.id !== id && rec.title === recomendaciones.title)) {
                 throw new Error("Recomendacion ya existe con este titulo");
             }
             return this.port.updateRecomendaciones(id, recomendaciones);
