@@ -1,10 +1,10 @@
 
+
 export interface UserEntity {
-    
+
     id: number;
-    email: string;
     name: string;
+    email: string;
     password: string;
-    status: number;
-    status_user: number;
+    role: string;
 }
